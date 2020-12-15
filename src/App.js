@@ -1,10 +1,19 @@
 import React from "react";
+import { Grid } from "semantic-ui-react";
+import HeaderPanel from "./components/HeaderPanel/HeaderPanel";
+import SidePanel from "./components/SidePanel/SidePanel";
+import ChatPanel from "./components/ChatPanel/ChatPanel";
 
 const App = () => {
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <Grid columns="equal" style={{ background: "#eee", height: "100vh" }}>
+      <SidePanel />
+
+      <Grid.Column style={{}}>
+        <HeaderPanel />
+        <ChatPanel />
+      </Grid.Column>
+    </Grid>
   );
 };
 

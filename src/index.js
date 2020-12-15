@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import firebase from './firebase';
-import { Provider } from 'react-redux';
-import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-import store from './store/store';
-import { useHistory } from 'react-router-dom';
-import './index.css';
-import 'semantic-ui-css/semantic.min.css';
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
+import firebase from "./firebase";
+import { Provider } from "react-redux";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import store from "./store/store";
+import { useHistory } from "react-router-dom";
+import "./index.css";
+import "semantic-ui-css/semantic.min.css";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
-} from 'react-router-dom';
-import App from './App';
-import SignUp from './components/auth/SignUp';
-import Login from './components/auth/Login';
+} from "react-router-dom";
+import App from "./App";
+import SignUp from "./components/auth/SignUp";
+import Login from "./components/auth/Login";
 
 const rrfProps = {
   firebase,
   config: {
-    userProfile: 'users',
+    userProfile: "users",
   },
   dispatch: store.dispatch,
 };
@@ -30,7 +30,9 @@ const Root = () => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        history.push('/');
+        history.push("/");
+      } else {
+        history.push("/login");
       }
     });
   }, []);
@@ -53,5 +55,5 @@ ReactDOM.render(
       </ReactReduxFirebaseProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
