@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
-
 import styles from './signup.module.css';
 
 const SignUp = () => {
   const firebase = useFirebase();
+  const history = useHistory();
+
+  const [usersRef, setUsersRef] = useState(firebase.database().ref('users'));
   const [fbErrors, setFbErrors] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -19,15 +22,25 @@ const SignUp = () => {
     register({ name: 'password' }, { required: true, minLength: 6 });
   }, []);
 
-  const onSubmit = ({ username, email, password, passwordConfirm }, e) => {
+  const onSubmit = ({ username, email, password }, e) => {
     setSubmitting(true);
     setFbErrors([]);
 
+    const [first, last] = username.split(' ');
+
     firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((createdUser) => {
-        console.log(createdUser);
+      .createUser(
+        {
+          email,
+          password,
+        },
+        {
+          name: username,
+          avatar: `https://ui-avatars.com/api/?name=${first}+${last}&background=random&color=fff`,
+        }
+      )
+      .then((user) => {
+        console.log(user);
         setSubmitting(false);
       })
       .catch((error) => {
@@ -38,8 +51,6 @@ const SignUp = () => {
 
   const displayErrors = () =>
     fbErrors.map((error, index) => <p key={index}>{error.message}</p>);
-
-  console.log(fbErrors);
 
   return (
     <Grid

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import firebase from './firebase';
 import { Provider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import store from './store/store';
+import { useHistory } from 'react-router-dom';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css';
 import {
@@ -24,21 +25,31 @@ const rrfProps = {
   dispatch: store.dispatch,
 };
 
-const Root = () => (
-  <Router>
+const Root = () => {
+  const history = useHistory();
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        history.push('/');
+      }
+    });
+  }, []);
+  return (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
     </Switch>
-  </Router>
-);
+  );
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-        <Root />
+        <Router>
+          <Root />
+        </Router>
       </ReactReduxFirebaseProvider>
     </Provider>
   </React.StrictMode>,
