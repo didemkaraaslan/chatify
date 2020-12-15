@@ -1,58 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
-import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
+import { useForm } from 'react-hook-form';
+
 import styles from './signup.module.css';
 
 const SignUp = () => {
   const firebase = useFirebase();
+  const [fbErrors, setFbErrors] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [errors, setErrors] = useState([]);
+  const { register, errors, handleSubmit, setValue } = useForm();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    register({ name: 'username' }, { required: true });
+    register({ name: 'email' }, { required: true });
+    register({ name: 'password' }, { required: true, minLength: 6 });
+  }, []);
 
-    if (isFormValid()) {
-      // firebase
-      //   .auth()
-      //   .createUserWithEmailAndPassword(email, password)
-      //   .then((createdUser) => {
-      //     console.log(createdUser);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-    }
+  const onSubmit = ({ username, email, password, passwordConfirm }, e) => {
+    setSubmitting(true);
+    setFbErrors([]);
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((createdUser) => {
+        console.log(createdUser);
+        setSubmitting(false);
+      })
+      .catch((error) => {
+        setFbErrors([{ message: error.message }]);
+        setSubmitting(false);
+      });
   };
 
-  const isFormValid = () => {
-    let errors = [];
-    let error = {};
+  const displayErrors = () =>
+    fbErrors.map((error, index) => <p key={index}>{error.message}</p>);
 
-    if (!isFormFilled()) {
-      error = { message: 'Tüm boşlukları doldurun ' };
-      setErrors(errors.concat(error));
-      return false;
-    } else if (!isPasswordsMatch()) {
-      error = { message: 'Şifre, Şifre (Tekrar) aynı olmalıdır' };
-      setErrors(errors.concat(error));
-      return false;
-    }
-    return true;
-  };
-
-  const isFormFilled = () =>
-    [username, email, password, passwordConfirm].every((field) =>
-      Boolean(field)
-    );
-
-  const isPasswordsMatch = () => password === passwordConfirm;
-
-  console.log(errors);
+  console.log(fbErrors);
 
   return (
     <Grid
@@ -65,14 +52,21 @@ const SignUp = () => {
           Chatify
           <span>.io</span>
         </h1>
-        <Form size="large" className={styles.form} onSubmit={handleSubmit}>
+        <Form
+          size="large"
+          className={styles.form}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Segment>
             <Form.Input
               fluid
               icon="user"
               iconPosition="left"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              onChange={(e, { name, value }) => {
+                setValue(name, value);
+              }}
+              error={errors.username ? true : false}
               placeholder="Kullanıcı Adı"
               type="text"
             />
@@ -81,8 +75,11 @@ const SignUp = () => {
               icon="mail"
               iconPosition="left"
               placeholder="Email Adresi"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              onChange={(e, { name, value }) => {
+                setValue(name, value);
+              }}
+              error={errors.email ? true : false}
               type="email"
             />
             <Form.Input
@@ -90,26 +87,20 @@ const SignUp = () => {
               icon="lock"
               iconPosition="left"
               placeholder="Şifre"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              onChange={(e, { name, value }) => {
+                setValue(name, value);
+              }}
+              error={errors.password ? true : false}
               type="password"
             />
 
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Şifre (Tekrar)"
-              value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
-              type="password"
-            />
-
-            <Button color="purple" fluid size="large">
+            <Button color="purple" fluid size="large" disabled={submitting}>
               Giriş Yap
             </Button>
           </Segment>
         </Form>
+        {fbErrors.length > 0 && <Message error> {displayErrors()}</Message>}
         <Message>
           Zaten bir hesabın var mı? <Link to="/login">Giriş Yap</Link>
         </Message>
