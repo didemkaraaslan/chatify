@@ -1,9 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
 .container {
-  background: url('../../images/bg-login.png');
+  background: url('../../images/bg-signup.png');
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
+}
+
+.form {
 }
 
 .formHeader {

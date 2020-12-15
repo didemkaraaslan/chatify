@@ -1,16 +1,11 @@
-import React from "react";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Image,
-  Message,
-  Segment,
-} from "semantic-ui-react";
-import styles from "./login.module.css";
+import React, { useState } from 'react';
+import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import styles from './login.module.css';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <Grid
       textAlign="center"
@@ -18,32 +13,34 @@ const Login = () => {
       className={styles.container}
     >
       <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as="h1" color="purple" textAlign="center">
-          Log-in to your account
-        </Header>
+        <h1 className={styles.formHeader}>
+          Chatify
+          <span>.io</span>
+        </h1>
         <Form size="large" className={styles.form}>
           <Segment>
             <Form.Input
               fluid
-              icon="user"
+              icon="mail"
               iconPosition="left"
-              placeholder="E-mail address"
+              placeholder="Email Adresi"
+              type="email"
             />
             <Form.Input
               fluid
               icon="lock"
               iconPosition="left"
-              placeholder="Password"
+              placeholder="Şifre"
               type="password"
             />
 
             <Button color="purple" fluid size="large">
-              Login
+              Giriş Yap
             </Button>
           </Segment>
         </Form>
         <Message>
-          New to us? <a href="#">Sign Up</a>
+          Yeni misin? <Link to="/signup">Hesap Oluştur</Link>
         </Message>
       </Grid.Column>
     </Grid>
