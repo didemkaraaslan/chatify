@@ -1,8 +1,8 @@
-import { CREATE_CHANNEL } from "./types";
+import { SET_CURRENT_CHANNEL } from "./types";
 
-export const createChannel = (channel) => {
+export const setCurrentChannel = (channel) => {
   return {
-    type: CREATE_CHANNEL,
+    type: SET_CURRENT_CHANNEL,
     payload: channel,
   };
 };
