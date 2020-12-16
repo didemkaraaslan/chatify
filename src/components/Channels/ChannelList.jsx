@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useFirebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentChannel } from "../../store/actions/channel";
@@ -10,6 +10,14 @@ const ChannelList = () => {
 
   const channels = useSelector((state) => state.firebase.ordered.channels);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (!mounted && !isEmpty(channels)) {
+      setActiveChannel(channels[0]);
+      setMounted(true);
+    }
+  }, [isLoaded(channels)]);
 
   const setActiveChannel = (channel) => {
     dispatch(setCurrentChannel(channel));
@@ -18,6 +26,7 @@ const ChannelList = () => {
   if (!isLoaded(channels)) {
     return "Loading channels";
   }
+
   return (
     <Menu.Menu>
       {channels &&
