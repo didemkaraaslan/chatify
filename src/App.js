@@ -6,6 +6,7 @@ import ChatPanel from "./components/ChatPanel/ChatPanel";
 
 const App = () => {
   const currentChannel = useSelector((state) => state.channels.currentChannel);
+
   return (
     <Grid columns="2" style={{ background: "#eee", height: "110vh" }}>
       <Grid.Row>

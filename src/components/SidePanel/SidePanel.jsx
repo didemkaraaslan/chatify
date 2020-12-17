@@ -46,25 +46,6 @@ const SidePanel = () => {
           {/* Channels */}
           <ChannelList />
         </Menu.Item>
-
-        {/* <Menu.Item>
-          <Menu.Header>Mesajlar</Menu.Header>
-
-          <Menu.Menu>
-            <Menu.Item
-              name="Ayse"
-              as="a"
-              active={activeItem === "Ayse"}
-              onClick={(e, { name }) => setActiveChannel(name)}
-            />
-            <Menu.Item
-              name="Mehmet"
-              as="a"
-              active={activeItem === "Mehmet"}
-              onClick={(e, { name }) => setActiveChannel(name)}
-            />
-          </Menu.Menu>
-        </Menu.Item> */}
       </Menu>
 
       <CreateChannelForm

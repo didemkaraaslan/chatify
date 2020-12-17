@@ -29,17 +29,16 @@ const ChannelList = () => {
 
   return (
     <Menu.Menu>
-      {channels &&
-        channels.map(({ key, value }) => (
-          <Menu.Item
-            key={key}
-            name={value?.name}
-            as="a"
-            icon="hashtag"
-            active={currentChannel?.key === key}
-            onClick={() => setActiveChannel({ key, value })}
-          />
-        ))}
+      {channels.map(({ key, value }) => (
+        <Menu.Item
+          key={key}
+          name={value?.name}
+          as="a"
+          icon="hashtag"
+          active={currentChannel?.key === key}
+          onClick={() => setActiveChannel({ key, value })}
+        />
+      ))}
     </Menu.Menu>
   );
 };

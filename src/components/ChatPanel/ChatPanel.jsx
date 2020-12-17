@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
-import { useFirebaseConnect } from "react-redux-firebase";
+import { useFirebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import {
   Header,
   Segment,
@@ -29,8 +29,6 @@ const ChatPanel = ({ currentChannel }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log("hello");
 
     if (content !== "") {
       const message = {
@@ -80,7 +78,6 @@ const ChatPanel = ({ currentChannel }) => {
           });
         })
         .catch((err) => console.error("error uploading file", err));
-      console.log(file);
     }
   };
 
@@ -93,11 +90,8 @@ const ChatPanel = ({ currentChannel }) => {
           <span>
             <Icon name="hashtag" />
             {currentChannel?.value?.name}
-            <Header.Subheader>2 Users</Header.Subheader>
           </span>
         </Header>
-
-        <Header floated="right">aa</Header>
       </Segment>
       {/* Message Area */}
       <Segment>
@@ -109,7 +103,6 @@ const ChatPanel = ({ currentChannel }) => {
           }}
         >
           {channelMessages &&
-            currentChannel &&
             channelMessages[`${currentChannel.key}`]?.map(({ key, value }) => (
               <Message key={key} message={value} />
             ))}

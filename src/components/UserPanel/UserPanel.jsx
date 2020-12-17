@@ -1,13 +1,19 @@
 import React from "react";
-import { Grid, Icon } from "semantic-ui-react";
+import { useFirebase } from "react-redux-firebase";
+import { Icon } from "semantic-ui-react";
 const UserPanel = () => {
+  const firebase = useFirebase();
+
+  const signOut = () => {
+    firebase.logout();
+  };
   return (
-    <Grid style={{ padding: 22 }}>
-      <Grid.Row>
-        <Icon name="puzzle" />
-        Didem
-      </Grid.Row>
-    </Grid>
+    <div
+      style={{ padding: 2, display: "flex", justifyContent: "space-between" }}
+    >
+      <p>Didem</p>
+      <Icon name="sign out" onClick={() => signOut()} />
+    </div>
   );
 };
 
