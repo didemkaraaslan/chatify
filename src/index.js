@@ -46,14 +46,12 @@ const Root = () => {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <Router>
-          <Root />
-        </Router>
-      </ReactReduxFirebaseProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <ReactReduxFirebaseProvider {...rrfProps}>
+      <Router>
+        <Root />
+      </Router>
+    </ReactReduxFirebaseProvider>
+  </Provider>,
   document.getElementById("root")
 );

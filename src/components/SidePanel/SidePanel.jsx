@@ -20,13 +20,13 @@ const SidePanel = () => {
     <>
       <Menu
         vertical
-        fixed="left"
         inverted
         secondary
         style={{
           width: "346px",
           fontSize: "1.2rem",
           background: "#202225",
+          height: "100vh",
         }}
       >
         <Menu.Item>
