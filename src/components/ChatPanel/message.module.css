@@ -1,4 +1,4 @@
-.message__self {
-  border-left: 2px solid orange;
-  padding-left: 8px;
+.image {
+  padding: 1em;
+  width: 50%;
 }
