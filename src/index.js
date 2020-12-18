@@ -16,6 +16,7 @@ import {
 import App from "./App";
 import SignUp from "./components/auth/SignUp";
 import Login from "./components/auth/Login";
+import PrivateRoute from "./components/auth/PrivateRoute";
 
 const rrfProps = {
   firebase,
@@ -38,7 +39,9 @@ const Root = () => {
   }, []);
   return (
     <Switch>
-      <Route exact path="/" component={App} />
+      <PrivateRoute exact path="/">
+        <App />
+      </PrivateRoute>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
     </Switch>

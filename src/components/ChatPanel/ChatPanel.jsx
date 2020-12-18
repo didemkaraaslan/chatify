@@ -16,9 +16,12 @@ import Message from "./Message";
 const { uuid } = require("uuidv4");
 
 const ChatPanel = ({ currentChannel }) => {
-  useFirebaseConnect([{ path: `/messages/${currentChannel.key}` }]);
+  // useFirebaseConnect([{ path: `/messages/${currentChannel.key}` }]);
+  useFirebaseConnect([
+    { path: `/messages/${currentChannel.key}`, storeAs: "channelMessages" },
+  ]);
   const channelMessages = useSelector(
-    (state) => state.firebase.ordered.messages
+    (state) => state.firebase.ordered.channelMessages
   );
 
   const firebase = useFirebase();
@@ -47,6 +50,8 @@ const ChatPanel = ({ currentChannel }) => {
       });
     }
   };
+
+  console.log(channelMessages);
 
   const sendMediaMessage = (url) => {
     const message = {
@@ -97,13 +102,13 @@ const ChatPanel = ({ currentChannel }) => {
       <Segment>
         <Comment.Group
           style={{
-            height: "719px",
+            height: "80vh",
             overflowY: "auto",
             maxWidth: "100%",
           }}
         >
           {channelMessages &&
-            channelMessages[`${currentChannel.key}`]?.map(({ key, value }) => (
+            channelMessages.map(({ key, value }) => (
               <Message key={key} message={value} />
             ))}
         </Comment.Group>
@@ -114,7 +119,8 @@ const ChatPanel = ({ currentChannel }) => {
         style={{
           position: "fixed",
           bottom: 0,
-          width: "calc(100% - 352px)",
+          width: "80%",
+          display: "flex",
         }}
       >
         <Button icon onClick={() => fileInputRef.current.click()}>
@@ -126,7 +132,7 @@ const ChatPanel = ({ currentChannel }) => {
             onChange={uploadMedia}
           />
         </Button>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} style={{ flex: "1" }}>
           <Input
             fluid
             name="message"
