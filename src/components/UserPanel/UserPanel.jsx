@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFirebase } from "react-redux-firebase";
 import { Icon } from "semantic-ui-react";
+
 const UserPanel = () => {
   const firebase = useFirebase();
 
@@ -12,7 +13,9 @@ const UserPanel = () => {
       style={{ padding: 2, display: "flex", justifyContent: "space-between" }}
     >
       <p>Didem</p>
-      <Icon name="sign out" onClick={() => signOut()} />
+      <div>
+        <Icon name="sign out" onClick={() => signOut()} />
+      </div>
     </div>
   );
 };

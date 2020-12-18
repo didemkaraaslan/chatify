@@ -99,7 +99,7 @@ const ChatPanel = ({ currentChannel }) => {
         </Header>
       </Segment>
       {/* Message Area */}
-      <Segment>
+      <Segment basic>
         <Comment.Group
           style={{
             height: "80vh",
