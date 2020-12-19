@@ -16,7 +16,6 @@ import Message from "./Message";
 const { uuid } = require("uuidv4");
 
 const ChatPanel = ({ currentChannel }) => {
-  // useFirebaseConnect([{ path: `/messages/${currentChannel.key}` }]);
   useFirebaseConnect([
     { path: `/messages/${currentChannel.key}`, storeAs: "channelMessages" },
   ]);
@@ -50,8 +49,6 @@ const ChatPanel = ({ currentChannel }) => {
       });
     }
   };
-
-  console.log(channelMessages);
 
   const sendMediaMessage = (url) => {
     const message = {
@@ -139,7 +136,7 @@ const ChatPanel = ({ currentChannel }) => {
             value={content}
             onChange={(event) => setContent(event.target.value)}
             labelPosition="left"
-            placeholder={`#${currentChannel?.value?.name} kanalına mesaj gönder`}
+            placeholder={`#${currentChannel?.name} kanalına mesaj gönder`}
           />
         </Form>
       </Segment>

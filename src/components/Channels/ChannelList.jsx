@@ -14,7 +14,8 @@ const ChannelList = () => {
 
   useEffect(() => {
     if (!mounted && !isEmpty(channels)) {
-      setActiveChannel(channels[0]);
+      const { key, value } = channels[0];
+      setActiveChannel({ key, ...value });
       setMounted(true);
     }
   }, [isLoaded(channels)]);
@@ -36,7 +37,7 @@ const ChannelList = () => {
           as="a"
           icon="hashtag"
           active={currentChannel?.key === key}
-          onClick={() => setActiveChannel({ key, value })}
+          onClick={() => setActiveChannel({ key, ...value })}
         />
       ))}
     </Menu.Menu>
