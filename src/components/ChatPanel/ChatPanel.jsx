@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
@@ -28,6 +28,14 @@ const ChatPanel = ({ currentChannel }) => {
   const profile = useSelector((state) => state.firebase.profile);
 
   const [content, setContent] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    messagesEndRef.current.scrollIntoView({
+      behaviour: "smooth",
+      block: "end",
+    });
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -83,7 +91,28 @@ const ChatPanel = ({ currentChannel }) => {
     }
   };
 
+  const filterMessages = () => {
+    const regex = new RegExp(searchTerm, "gi");
+
+    const searchResults = [...channelMessages].reduce((acc, message) => {
+      if (
+        (message.value.content && message.value.content.match(regex)) ||
+        message.value.user.name.match(regex)
+      ) {
+        acc.push(message);
+      }
+
+      return acc;
+    }, []);
+
+    return searchResults;
+  };
+
   const fileInputRef = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  const renderedMessages =
+    searchTerm !== "" ? filterMessages() : channelMessages;
 
   return (
     <>
@@ -91,12 +120,27 @@ const ChatPanel = ({ currentChannel }) => {
         <Header as="h3" floated="left">
           <span>
             <Icon name="hashtag" />
-            {currentChannel?.value?.name}
+            {currentChannel?.name}
           </span>
+        </Header>
+
+        {/* Search Messages */}
+        <Header as="h3" floated="right">
+          <Input
+            size="mini"
+            icon="search"
+            name="searchTerm"
+            placeholder="Mesajlarda ara.."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
         </Header>
       </Segment>
       {/* Message Area */}
-      <Segment basic>
+      <Segment
+        style={{ position: "fixed", top: 55, bottom: 70, width: "81%" }}
+        basic
+      >
         <Comment.Group
           style={{
             height: "80vh",
@@ -104,10 +148,12 @@ const ChatPanel = ({ currentChannel }) => {
             maxWidth: "100%",
           }}
         >
-          {channelMessages &&
-            channelMessages.map(({ key, value }) => (
+          {renderedMessages &&
+            renderedMessages.map(({ key, value }) => (
               <Message key={key} message={value} />
             ))}
+
+          <div ref={messagesEndRef}></div>
         </Comment.Group>
       </Segment>
 
@@ -116,7 +162,7 @@ const ChatPanel = ({ currentChannel }) => {
         style={{
           position: "fixed",
           bottom: 0,
-          width: "80%",
+          width: "85%",
           display: "flex",
         }}
       >

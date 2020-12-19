@@ -23,6 +23,7 @@ const SidePanel = () => {
         vertical
         inverted
         secondary
+        fixed="left"
         style={{
           width: "346px",
           fontSize: "1.2rem",

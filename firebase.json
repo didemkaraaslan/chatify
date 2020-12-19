@@ -1,0 +1,9 @@
+{
+  "hosting": {
+    "public": "./build"
+  },
+  "rulesFile": "database.rules.json",
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
