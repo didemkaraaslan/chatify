@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useFirebase } from 'react-redux-firebase';
-import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
-import { useForm } from 'react-hook-form';
-import styles from './signup.module.css';
+import React, { useState, useEffect } from "react";
+import { useFirebase } from "react-redux-firebase";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button, Form, Grid, Message, Segment } from "semantic-ui-react";
+import { useForm } from "react-hook-form";
+import styles from "./signup.module.css";
 
 const SignUp = () => {
   const firebase = useFirebase();
   const history = useHistory();
 
-  const [usersRef, setUsersRef] = useState(firebase.database().ref('users'));
   const [fbErrors, setFbErrors] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
   const { register, errors, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register({ name: 'username' }, { required: true });
-    register({ name: 'email' }, { required: true });
-    register({ name: 'password' }, { required: true, minLength: 6 });
+    register({ name: "username" }, { required: true });
+    register({ name: "email" }, { required: true });
+    register({ name: "password" }, { required: true, minLength: 6 });
   }, []);
 
   const onSubmit = ({ username, email, password }, e) => {
     setSubmitting(true);
     setFbErrors([]);
 
-    const [first, last] = username.split(' ');
+    const [first, last] = username.split(" ");
 
     firebase
       .createUser(
@@ -41,10 +40,11 @@ const SignUp = () => {
       )
       .then((user) => {
         console.log(user);
-        setSubmitting(false);
       })
       .catch((error) => {
         setFbErrors([{ message: error.message }]);
+      })
+      .finally(() => {
         setSubmitting(false);
       });
   };
@@ -107,7 +107,7 @@ const SignUp = () => {
             />
 
             <Button color="purple" fluid size="large" disabled={submitting}>
-              Giriş Yap
+              Kaydol
             </Button>
           </Segment>
         </Form>

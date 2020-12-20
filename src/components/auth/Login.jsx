@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useFirebase } from 'react-redux-firebase';
-import { Button, Form, Grid, Message, Segment } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import styles from './login.module.css';
+import React, { useState, useEffect } from "react";
+import { useFirebase } from "react-redux-firebase";
+import { Button, Form, Grid, Message, Segment } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import styles from "./login.module.css";
 
 const Login = () => {
   const firebase = useFirebase();
@@ -13,8 +13,8 @@ const Login = () => {
   const { register, errors, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register({ name: 'email' }, { required: true });
-    register({ name: 'password' }, { required: true, minLength: 6 });
+    register({ name: "email" }, { required: true });
+    register({ name: "password" }, { required: true, minLength: 6 });
   }, []);
 
   const onSubmit = ({ email, password }, e) => {
@@ -28,10 +28,11 @@ const Login = () => {
       })
       .then((data) => {
         console.log(data);
-        setSubmitting(false);
       })
       .catch((error) => {
         setFbErrors([{ message: error.message }]);
+      })
+      .finally(() => {
         setSubmitting(false);
       });
   };
